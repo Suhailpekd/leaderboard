@@ -20,7 +20,8 @@ class _LeaderBoardState extends State<LeaderBoard> {
   final _controller = StreamController<dynamic>();
 
   static get http => null;
-
+  List<dynamic> leaders = [];
+  String region = "";
   String apiUrl =
       "https://e811e307-bc1a-4f80-8e1f-af2d64f41348.mock.pstmn.io/leaderboard";
 
@@ -32,15 +33,19 @@ class _LeaderBoardState extends State<LeaderBoard> {
       Map<String, dynamic> data = jsonDecode(apicaller.body);
       String region = data['region'];
       List<dynamic> leaders = data['leaders'];
-
-      // Now you can access data like data['region'] and data['leaders']
-      // For example:
+      leaders.sort((a, b) => b['points'].compareTo(a['points']));
 
       return leaders;
     } catch (e) {
       // Handle errors here
       print('Error fetching data: $e');
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
   }
 
   @override
